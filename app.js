@@ -21,17 +21,8 @@ app.set('trust proxy', 1);
 app.use(session({
     resave : false,
     saveUninitialized : false,
-<<<<<<< HEAD
-    store: new MongoStore({ mongooseConnection: mongoose.connection })
-=======
     secret : process.env.PASSPORT_KEY,
-    cookie: {
-        sameSite: true,
-        httpOnly: true,
-        secure: true,
-        maxAge: 1000 * 60 * 60 * 24 * 30
-    }
->>>>>>> b54f7b9802a8f9060111e890fc4ed05a149753f5
+    store: new MongoStore({ mongooseConnection: mongoose.connection })
 }));
 
 app.use(passport.initialize());
