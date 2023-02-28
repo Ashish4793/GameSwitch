@@ -336,7 +336,6 @@ app.post("/deletecartitem" , function(req,res){
 
 let amount;
 let secureEmail;
-let status = false;
 let custname;
 let userid;
 app.post("/checkout" , async (req,res) =>{
@@ -359,10 +358,9 @@ app.post("/checkout" , async (req,res) =>{
               },
             ],
             mode: 'payment',
-            success_url: `${YOUR_DOMAIN}/success`,
+            success_url: `${YOUR_DOMAIN}/successf8afagegfeafg33r7ae9fg9af79agfa`,
             cancel_url: `${YOUR_DOMAIN}/orderfailure`,
         });
-        status = true;
         res.redirect(303, session.url);
 
     } else {
@@ -374,8 +372,7 @@ app.get("/orderfailure" , function(req,res){
     res.render("orderfailure");
 });
 
-app.get("/success" , async function(req,res){
-    if(status===true){
+app.get("/successf8afagegfeafg33r7ae9fg9af79agfa" , async function(req,res){
         res.render("ordersuccess");
         CartItem.deleteMany({userCart : userid} , function(err){
             if (err){
@@ -417,13 +414,8 @@ app.get("/success" , async function(req,res){
                 console.log(err);
             } else {
                 console.log("sent mail");
-                status = false;
             }
         });
-    } else{
-        console.log("Access Restricted!");
-    }
-
 });
 
 ///////////////////////////////////////////
