@@ -1,0 +1,18 @@
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+    font-family: 'Ubuntu Mono', monospace;
+}
+
+.card {
+    margin: 0 auto; /* Added */
+    /* margin-left: 5rem; */
+    float: none; /* Added */
+    margin-bottom: 10px; /* Added */
+}
+
+.alert{
+    display:none;
+  }
+

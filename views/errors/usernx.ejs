@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="switch.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Bad Credentials!</title>
+</head>
+<body>
+    <style>
+        body{
+          font-family: 'Ubuntu Mono', monospace;
+        }
+    </style>
+<script>
+$(document).ready(function() { 
+     Swal.fire({
+    type: 'error',
+    icon : 'error',
+    title: 'Error!',
+    confirmButtonText: 'Try again',
+    text: 'No user was found with the given email address',
+    footer: '',
+})
+.then(function (result) {
+    if (result.value) {
+        window.location = "/forgotpass";
+    }
+})
+});
+</script> 
+</body>
+</html>

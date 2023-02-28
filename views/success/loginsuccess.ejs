@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="switch.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Success!</title>
+</head>
+<body>
+    <style>
+        body{
+          font-family: 'Ubuntu Mono', monospace;
+        }
+    </style>
+    <script>
+        $(document).ready(function() { 
+            Swal.fire({
+            type: 'success',
+            icon : 'success',
+            title: 'Success!',
+            confirmButtonText: 'Home',
+            text: 'You are now logged in!',
+            footer: '',
+        })
+        .then(function (result) {
+            if (result.value) {
+                window.location = "/";
+            }
+        })
+        });
+    </script> 
+</body>
+</html>
