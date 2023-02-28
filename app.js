@@ -29,7 +29,18 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 mongoose.set("strictQuery" ,false);
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true }, () => { console.log('Connected to MongoDB'); });
+
+const connectDB = async () => {
+    try {
+      const conn = await mongoose.connect(process.env.MONGO_URI);
+      console.log(`MongoDB Connected: ${conn.connection.host}`);
+  
+    } catch (error) {
+      console.log(error);
+      process.exit(1);
+    }
+  };
+//mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true }, () => { console.log('Connected to MongoDB'); });
 
 const userSchema = new mongoose.Schema({
     email : {type:String, unique:true},
@@ -343,7 +354,7 @@ app.post("/checkout" , async (req,res) =>{
         userid = req.user.username;
         secureEmail = req.user.email;
         custname = req.user.name;
-        const YOUR_DOMAIN = "http://192.168.0.103:3000";
+        const YOUR_DOMAIN = "http://gameswitch.cyclic.app";
         amount = req.body.totalAmount;
         const amountToCharge = parseInt(amount * 100);
         const session = await stripe.checkout.sessions.create({
@@ -444,8 +455,12 @@ app.post("/searchquery" , function(req,res){
 });
 
 
-app.listen(3000 , function(){
-    console.log("Server Started on PORT 3000");
+
+
+
+connectDB().then(() => {
+    console.log("DB CONNETED SUCCESFULLY");
+    app.listen(3000, () => {
+        console.log("Server STARTED");
+    })
 });
-
-
