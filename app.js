@@ -336,6 +336,7 @@ app.post("/deletecartitem" , function(req,res){
 
 let amount;
 let secureEmail;
+let status = false;
 let custname;
 let userid;
 app.post("/checkout" , async (req,res) =>{
@@ -343,7 +344,7 @@ app.post("/checkout" , async (req,res) =>{
         userid = req.user.username;
         secureEmail = req.user.email;
         custname = req.user.name;
-        const YOUR_DOMAIN = process.env.DOMAIN;
+        const YOUR_DOMAIN = "http://gameswitch.cyclic.app";
         amount = req.body.totalAmount;
         const amountToCharge = parseInt(amount * 100);
         const session = await stripe.checkout.sessions.create({
@@ -361,6 +362,7 @@ app.post("/checkout" , async (req,res) =>{
             success_url: `${YOUR_DOMAIN}/success`,
             cancel_url: `${YOUR_DOMAIN}/orderfailure`,
         });
+        status = true;
         res.redirect(303, session.url);
 
     } else {
@@ -373,7 +375,7 @@ app.get("/orderfailure" , function(req,res){
 });
 
 app.get("/success" , async function(req,res){
-    if(amount!=null){
+    if(status===true){
         res.render("ordersuccess");
         CartItem.deleteMany({userCart : userid} , function(err){
             if (err){
@@ -415,7 +417,7 @@ app.get("/success" , async function(req,res){
                 console.log(err);
             } else {
                 console.log("sent mail");
-                amount=null;
+                status = false;
             }
         });
     } else{
@@ -451,7 +453,7 @@ app.post("/searchquery" , function(req,res){
 
 
 app.listen(3000 , function(){
-    console.log("Server Started");
+    console.log("Server Started on PORT 3000");
 });
 
 
