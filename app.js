@@ -138,9 +138,9 @@ app.post("/forgotpass" , async function(req,res){
                     console.log(err);
                 } else {
                     console.log("sent otp");
+                    res.render("resetpass");
                 }
             });
-            res.render("resetpass");
         } else {
             res.render("errors/usernx");
         }
@@ -343,7 +343,7 @@ app.post("/checkout" , async (req,res) =>{
         userid = req.user.username;
         secureEmail = req.user.email;
         custname = req.user.name;
-        const YOUR_DOMAIN = "http://gameswitch.cyclic.app";
+        const YOUR_DOMAIN = "http://192.168.0.103:3000";
         amount = req.body.totalAmount;
         const amountToCharge = parseInt(amount * 100);
         const session = await stripe.checkout.sessions.create({
@@ -373,7 +373,6 @@ app.get("/orderfailure" , function(req,res){
 });
 
 app.get("/successf8afagegfeafg33r7ae9fg9af79agfa" , async function(req,res){
-        res.render("ordersuccess");
         CartItem.deleteMany({userCart : userid} , function(err){
             if (err){
                 console.log(err);
@@ -389,7 +388,7 @@ app.get("/successf8afagegfeafg33r7ae9fg9af79agfa" , async function(req,res){
             status : "Paid"
         });
         newOrder.save();
-        var body = `Dear ${custname},\n \nYour Payment of Rs ${amount} was succesful.your order will be fulfilled shortly. \n \nRegards,\nSales Team\nGameSwitch LLC`
+        var body = `Dear ${custname},\n \nYour Payment of Rs ${amount} was succesful towards your order number #${rndomNo} you will shortly recieve an email containing the game codes. \n \nRegards,\nSales Team\nGameSwitch LLC`
         let mailTransporter = await nodemailer.createTransport({
             service : "gmail",
             auth : {
@@ -414,6 +413,7 @@ app.get("/successf8afagegfeafg33r7ae9fg9af79agfa" , async function(req,res){
                 console.log(err);
             } else {
                 console.log("sent mail");
+                res.render("ordersuccess");
             }
         });
 });
