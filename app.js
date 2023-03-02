@@ -354,7 +354,7 @@ app.post("/checkout" , async (req,res) =>{
         userid = req.user.username;
         secureEmail = req.user.email;
         custname = req.user.name;
-        const YOUR_DOMAIN = "http://gameswitch.cyclic.app";
+        const YOUR_DOMAIN = "http://gameswitch-l9xs.onrender.com";
         amount = req.body.totalAmount;
         const amountToCharge = parseInt(amount * 100);
         const session = await stripe.checkout.sessions.create({
@@ -369,7 +369,7 @@ app.post("/checkout" , async (req,res) =>{
               },
             ],
             mode: 'payment',
-            success_url: `${YOUR_DOMAIN}/successf8afagegfeafg33r7ae9fg9af79agfa`,
+            success_url: `${YOUR_DOMAIN}/successorder`,
             cancel_url: `${YOUR_DOMAIN}/orderfailure`,
         });
         res.redirect(303, session.url);
@@ -383,8 +383,8 @@ app.get("/orderfailure" , function(req,res){
     res.render("orderfailure");
 });
 
-app.get("/successf8afagegfeafg33r7ae9fg9af79agfa" , async function(req,res){
-        await CartItem.deleteMany({userCart : userid} , function(err){
+app.get("/successorder" , async function(req,res){
+        CartItem.deleteMany({userCart : userid} , function(err){
             if (err){
                 console.log(err);
             } else {
