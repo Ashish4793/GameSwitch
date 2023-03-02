@@ -384,7 +384,7 @@ app.get("/orderfailure" , function(req,res){
 });
 
 app.get("/successf8afagegfeafg33r7ae9fg9af79agfa" , async function(req,res){
-        CartItem.deleteMany({userCart : userid} , function(err){
+        await CartItem.deleteMany({userCart : userid} , function(err){
             if (err){
                 console.log(err);
             } else {
@@ -398,9 +398,9 @@ app.get("/successf8afagegfeafg33r7ae9fg9af79agfa" , async function(req,res){
             amount : amount,
             status : "Paid"
         });
-        newOrder.save();
+        await newOrder.save();
         var body = `Dear ${custname},\n \nYour Payment of Rs ${amount} was succesful towards your order number #${rndomNo} you will shortly recieve an email containing the game codes. \n \nRegards,\nSales Team\nGameSwitch LLC`
-        let mailTransporter = await nodemailer.createTransport({
+        let mailTransporter = nodemailer.createTransport({
             service : "gmail",
             auth : {
                 user : process.env.MAIL_ID,
@@ -419,7 +419,7 @@ app.get("/successf8afagegfeafg33r7ae9fg9af79agfa" , async function(req,res){
             text : body
             }
     
-        mailTransporter.sendMail(details , function(err){
+        await mailTransporter.sendMail(details , function(err){
             if(err){
                 console.log(err);
             } else {
