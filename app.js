@@ -117,7 +117,7 @@ app.get("/logout" , function(req,res){
 app.get("/forgotpass" , function(req,res){
     res.render("forgotpass");
 });
-let otp = null;
+let otp;
 let forUser;
 app.post("/forgotpass" , async function(req,res){
     forUser = req.body.email;
