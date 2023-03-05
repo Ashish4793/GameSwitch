@@ -10,6 +10,7 @@ const MongoStore = require('connect-mongo')(session);
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
 const stripe = require('stripe')(process.env.STRIPE_KEY);
+const easyinvoice = require("easyinvoice");
 
 const app = express();
 
@@ -39,8 +40,7 @@ const connectDB = async () => {
       console.log(error);
       process.exit(1);
     }
-  };
-//mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true }, () => { console.log('Connected to MongoDB'); });
+};
 
 const userSchema = new mongoose.Schema({
     email : {type:String, unique:true},
@@ -79,6 +79,8 @@ const GameList = mongoose.model("GameList" , gameListSchema);
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+
 
 app.get("/" , function(req,res){
     if (req.isAuthenticated()){
@@ -159,9 +161,10 @@ app.post("/forgotpass" , async function(req,res){
 });
 
 app.post("/resetpass" , function(req,res){
+    var sOtp = otp;
     User.findOne({email : forUser} , function(err , foundUser){
         if (!err){
-            if (otp === req.body.otp){
+            if (sOtp === req.body.otp){
                 foundUser.setPassword(req.body.newpass , function(){
                     foundUser.save();
                     otp = null;
@@ -384,6 +387,10 @@ app.get("/orderfailure" , function(req,res){
 });
 
 app.get("/successorder" , async function(req,res){
+    if (req.isAuthenticated()){
+        const uName = req.user.name;
+        const uEmail = req.user.email;
+
         CartItem.deleteMany({userCart : userid} , function(err){
             if (err){
                 console.log(err);
@@ -397,7 +404,8 @@ app.get("/successorder" , async function(req,res){
             orderID : rndomNo,
             amount : amount,
             status : "Paid"
-        });
+        });   
+
         await newOrder.save();
         var body = `Dear ${custname},\n \nYour Payment of Rs ${amount} was succesful towards your order number #${rndomNo} you will shortly recieve an email containing the game codes. \n \nRegards,\nSales Team\nGameSwitch LLC`
         let mailTransporter = nodemailer.createTransport({
@@ -424,9 +432,12 @@ app.get("/successorder" , async function(req,res){
                 console.log(err);
             } else {
                 console.log("sent mail");
-                res.render("ordersuccess");
+                res.render("ordersuccess" , {uName : uName , uEmail : uEmail , orderNo : rndomNo , price : amount});
             }
         });
+    } else {
+        res.redirect("/login");
+    }
 });
 
 ///////////////////////////////////////////
