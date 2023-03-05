@@ -39,6 +39,9 @@ var yyyy = today.getFullYear();
 
 today = mm + '/' + dd + '/' + yyyy;
 
+var cName = <%-JSON.stringify(uName)%>;
+var cEmail = <%-JSON.stringify(uEmail)%>;
+
 var data = {
     "images": {
         "logo": "https://i.imgur.com/KPX2Cp7.jpeg",
@@ -51,8 +54,8 @@ var data = {
         "country": "United States"
     },
     "client": {
-        "company": <%-JSON.stringify(uName)%>,
-        "address": <%-JSON.stringify(uEmail)%>,
+        "company": `Cust. Name : ${cName}`,
+        "address": `Cust. Email : ${cEmail}`,
     },
     "information": {
         "number": <%-JSON.stringify(orderNo)%>,
