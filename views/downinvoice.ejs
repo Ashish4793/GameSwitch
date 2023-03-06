@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="switch.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://unpkg.com/pdfjs-dist/build/pdf.min.js"></script>
+    <script src="https://unpkg.com/pdfjs-dist/build/pdf.worker.min.js"></script>
+    <script src="https://unpkg.com/easyinvoice/dist/easyinvoice.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <title>Invoice</title>
+</head>
+<body>
+    <div style="margin-top: 5rem;" class="container text-center">
+        <a href="/"><button class="btn btn-dark">Home</button></a>
+    </div>
+    <div id="element">
+        <div style="margin-top: 19rem;" class="d-flex justify-content-center">
+            <div  style="margin-right: 1rem;" class="spinner-border" role="status">
+              <span class="sr-only"></span>
+            </div>
+            <span>Loading..</span>
+        </div>
+    </div>
+
+</body>
+<script type="text/javascript">
+    setTimeout(function() {
+    $('#element').fadeOut('fast');
+}, 5000);
+
+var cName = <%-JSON.stringify(foundOrder.custName)%>;
+var cEmail = <%-JSON.stringify(foundOrder.custEmail)%>;
+window.onload = (event) => {
+    var data = {
+    "images": {
+        "logo": "https://i.imgur.com/KPX2Cp7.jpeg",
+    },
+    "sender": {
+        "company": "GameSwitch LLC",
+        "address": "Street 12",
+        "zip": "97866",
+        "city": "Washington",
+        "country": "United States"
+    },
+    "client": {
+        "company": `Cust. Name : ${cName}`,
+        "address": `Cust. Email : ${cEmail}`,
+    },
+    "information": {
+        "number": <%-JSON.stringify(foundOrder.orderID)%>,
+        "date": <%-JSON.stringify(foundOrder.orderDate)%>,
+        "due-date" : "NILL",
+    },
+    "products": [
+        {
+            "quantity": 1,
+            "description": "Games",
+            "price": <%-JSON.stringify(foundOrder.amount)%>,
+            "tax-rate" : 0,
+        },
+    ],
+    "bottom-notice": "Thank you for your purchase. Have a great day!",
+    "settings": {
+        "currency": "INR",
+        "tax-notation": "vat",
+        "margin-top": 25,
+        "margin-right": 25,
+        "margin-left": 25,
+        "margin-bottom": 25
+    }
+}
+
+easyinvoice.createInvoice(data, function (result) {
+    easyinvoice.download('Invoice.pdf', result.pdf);
+});
+};
+
+
+</script>
+</html>

@@ -66,6 +66,9 @@ const cartSchema =  new mongoose.Schema({
 
 const orderSchema = new mongoose.Schema({
     orderBy : String,
+    custName : String,
+    custEmail : String,
+    orderDate : String,
     orderID : {type : String , unique : true},
     amount : String,
     status : String,
@@ -79,7 +82,6 @@ const GameList = mongoose.model("GameList" , gameListSchema);
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
 
 
 app.get("/" , function(req,res){
@@ -231,6 +233,16 @@ app.get("/orders" , function(req,res){
     } else {
         res.redirect("/login");
     }
+});
+
+app.post("/download-invoice" , function(req,res){
+    Order.findOne({orderID : req.body.orderID} , function(err , foundOrder){
+        if (!err){
+            res.render("downinvoice" , {foundOrder : foundOrder});
+        } else {
+            console.log(err);
+        }
+    });
 });
 
 app.get("/lgsuccess" , function(req,res){
@@ -388,6 +400,12 @@ app.get("/orderfailure" , function(req,res){
 
 app.get("/successorder" , async function(req,res){
     if (req.isAuthenticated()){
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+
+        today = mm + '/' + dd + '/' + yyyy;
         const uName = req.user.name;
         const uEmail = req.user.email;
 
@@ -401,6 +419,9 @@ app.get("/successorder" , async function(req,res){
         rndomNo = Math.floor(1000 + Math.random() * 9000).toString();
         const newOrder = new Order({
             orderBy : userid,
+            custName : uName,
+            custEmail : uEmail,
+            orderDate : today,
             orderID : rndomNo,
             amount : amount,
             status : "Paid"
