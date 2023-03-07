@@ -32,12 +32,7 @@
 });
 
 function myFunction(){
-var today = new Date();
-var dd = String(today.getDate()).padStart(2, '0');
-var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-var yyyy = today.getFullYear();
-
-today = mm + '/' + dd + '/' + yyyy;
+var todayDate = new Date().toISOString().slice(0, 10);
 
 var cName = <%-JSON.stringify(uName)%>;
 var cEmail = <%-JSON.stringify(uEmail)%>;
@@ -59,7 +54,7 @@ var data = {
     },
     "information": {
         "number": <%-JSON.stringify(orderNo)%>,
-        "date": today,
+        "date": todayDate,
         "due-date" : "NILL",
     },
     "products": [

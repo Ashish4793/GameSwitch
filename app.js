@@ -445,12 +445,7 @@ app.get("/orderfailure" , function(req,res){
 
 app.get("/successorder" , async function(req,res){
     if (req.isAuthenticated()){
-        var today = new Date();
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-        var yyyy = today.getFullYear();
-
-        today = mm + '/' + dd + '/' + yyyy;
+        var todayDate = new Date().toISOString().slice(0, 10);
         const uName = req.user.name;
         const uEmail = req.user.email;
 
@@ -466,7 +461,7 @@ app.get("/successorder" , async function(req,res){
             orderBy : userid,
             custName : uName,
             custEmail : uEmail,
-            orderDate : today,
+            orderDate : todayDate,
             orderID : rndomNo,
             amount : amount,
             status : "Paid"
