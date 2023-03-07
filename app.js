@@ -116,6 +116,51 @@ app.get("/logout" , function(req,res){
     }
 });
 
+app.get("/forgotcred" , function(req,res){
+    res.render("forgotcred");
+});
+
+app.get("/forgotuid" , function(req,res){
+    res.render("forgotuid");
+});
+
+app.post("/forgotuid" , function(req,res){
+    const userEmail = req.body.email;
+    User.findOne({email : userEmail} , async function(err , foundUser){
+        if(foundUser!=null){
+            var body = `Dear ${foundUser.name},\n \nYour Username is  ${foundUser.username}.\n \nRegards,\nAdmin\nGameSwitch LLC`
+            let mailTransporter = await nodemailer.createTransport({
+                service : "gmail",
+                auth : {
+                    user : process.env.MAIL_ID,
+                    pass : process.env.MAIL_PASS
+                },
+                tls:{
+                    rejectUnauthorized:false
+                }
+            });
+            
+        
+            let details = {
+                from : process.env.MAIL_ID,
+                to : userEmail,
+                subject : "Username Retrieval",
+                text : body
+                }
+        
+            await mailTransporter.sendMail(details , function(err){
+                if(err){
+                    console.log(err);
+                } else {
+                    console.log("sent uid mail");
+                    res.render("success/fuidsuccess");
+                }
+            });
+        } else {
+            res.render("errors/usernx");
+        }
+    })
+});
 
 
 app.get("/forgotpass" , function(req,res){
@@ -152,7 +197,7 @@ app.post("/forgotpass" , async function(req,res){
                 if(err){
                     console.log(err);
                 } else {
-                    console.log("sent otp");
+                    console.log("sent otp mail");
                     res.render("resetpass");
                 }
             });

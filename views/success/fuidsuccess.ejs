@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <title>User does not exist!</title>
+    <title>Success</title>
 </head>
 <body>
     <style>
@@ -19,16 +19,16 @@
 <script>
 $(document).ready(function() { 
      Swal.fire({
-    type: 'error',
-    icon : 'error',
-    title: 'Error!',
-    confirmButtonText: 'Try again',
-    text: 'No user was found with the given email address',
+    type: 'success',
+    icon : 'success',
+    title: 'Success!',
+    confirmButtonText: 'Okay',
+    text: 'Your Username has been sent to your registerd email address',
     footer: '',
 })
 .then(function (result) {
     if (result.value) {
-        window.location = "/forgotcred";
+        window.location = "/login";
     }
 })
 });
