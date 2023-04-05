@@ -56,7 +56,7 @@
         <% foundGames.forEach(function(game){ %>
             <div style="margin-bottom: 30px;" class="col-md-3">
                 <div class="card h-100" style="width: 15rem;">
-                    <img src="<%= game.gameCover %>" class="card-img-top" alt="...">
+                    <img style="height : 294px" src="<%= game.gameCover %>" class="card-img-top" alt="...">
                     <div class="card-body">
                       <form action="/addtocart" method="POST">
                         <input type="hidden" value="<%= game._id %>" name="hue">

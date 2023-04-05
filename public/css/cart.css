@@ -1,7 +1,7 @@
 
 
 body{
-    background: blue;
+    background: rgb(192, 192, 192);
     min-height: 100vh;
     vertical-align: middle;
     display: flex;

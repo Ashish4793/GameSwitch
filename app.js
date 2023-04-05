@@ -365,18 +365,25 @@ app.post("/addtocart" , function(req,res){
     if (req.isAuthenticated()){
         var user = req.user.username;
         var gotID = req.body.hue;
+        
         GameList.findOne({_id : gotID} , function(err , gotItem){
-            const newItem = new CartItem({
-                userCart : user,
-                name : gotItem.gameName,
-                price : gotItem.gamePrice,
-                coverPic : gotItem.gameCover
-            });
-            newItem.save(function(err){
-                if (!err){
-                    console.log("Added to cart");
-                } else{
-                    console.log("Already added to cart")
+            CartItem.findOne({userCart : user , name : gotItem.gameName} , function(err , item){
+                if (item === null) {
+                    const newItem = new CartItem({
+                        userCart : user,
+                        name : gotItem.gameName,
+                        price : gotItem.gamePrice,
+                        coverPic : gotItem.gameCover
+                    });
+                    newItem.save(function(err){
+                        if (!err){
+                            console.log("Added to cart");
+                        } else{
+                            console.log("Already added to cart")
+                        }
+                    });
+                } else {
+                    console.log("already found");
                 }
             });
         });
